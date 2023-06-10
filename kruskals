@@ -129,13 +129,7 @@ int main()
 
 /*5 4 1 2 3 4 5 4 2 3 5 3 4 10
 For any graph, 
-?
-=
-(
-?
-,
-?
-)
+
 G=(V,E), finding an MST using Kruskal's algorithm involves the following steps -
 
 Sort all the edges of the graph in ascending order of their weights.
