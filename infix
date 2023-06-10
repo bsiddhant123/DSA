@@ -1,0 +1,147 @@
+#include<iostream>
+using namespace std;
+
+class Stack
+{
+	char data;
+	Stack *next;
+	Stack *top;
+	public:
+	
+		Stack()
+		{
+			top=NULL;
+		}
+		void push(char x);
+		void pop();
+		void infixtopostfix(char [],char []);
+};
+
+void Stack :: push(char x)
+{
+	Stack *newnode=new Stack();
+	newnode->data=x;
+	newnode->next=NULL;
+	
+	if(top==NULL)
+	{
+		top=newnode;
+	}
+	else
+	{
+		newnode->next=top;
+		top=newnode;
+	}
+}
+
+void Stack :: pop()
+{
+	if(top==NULL)
+	{
+		cout<<"Empty Stack.";
+		return;
+	}
+	else
+	{
+		top=top->next;
+	}
+}
+
+int priority(char x)
+{
+	if(x=='^')
+	{
+		return 3;
+	}
+	else if(x=='*' || x=='/')
+	{
+		return 2;
+	}
+	else if(x=='+' || x=='-')
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+void Stack::infixtopostfix(char infix[10],char postfix[10])
+{   
+	int i=0,j=0;
+	while(infix[i]!='\0')
+	{
+		if(!(isalnum(infix[i])))
+		{
+			if(top==NULL)
+			push(infix[i]);
+			else if(infix[i]=='(')
+			{
+				push(infix[i]);  
+			}
+			else if(infix[i]==')')
+			{
+				while(top->data!='(')
+				{
+					postfix[j]=top->data;
+					j++;
+					pop();
+				}
+				pop();
+			}
+			else
+			{
+				while(priority(infix[i])<=priority(top->data))
+				{
+					postfix[j]=top->data;
+					j++;
+					pop();
+					if(top==NULL)
+						break;
+				}
+				push(infix[i]);
+			}
+		}  
+			else
+			{
+				postfix[j]=infix[i];
+				j++;
+			}
+				i++;
+	}
+	while(top!=NULL)
+	{
+		postfix[j]=top->data;
+		j++;
+		pop();
+	}
+	postfix[j]='\0';
+}
+
+int main()
+{
+	Stack s;
+	char infix[10];
+	char postfix[10];
+	cout<<"Enter Expression: "<<endl;
+	cin>>infix;
+	s.infixtopostfix(infix,postfix);
+	cout<<postfix<<endl;
+
+}
+
+/*
+A*B/C
+2*3/(2-1)+5*3
+
+
+(),{},[],^,*,/,+,-
+Here are the steps of the algorithm to convert Infix to postfix using stack in C:
+
+Scan all the symbols one by one from left to right in the given Infix Expression.
+If the reading symbol is an operand, then immediately append it to the Postfix Expression.
+If the reading symbol is left parenthesis ‘( ‘, then Push it onto the Stack.
+If the reading symbol is right parenthesis ‘)’, then Pop all the contents of the stack until the respective left parenthesis is popped and append each popped symbol to Postfix Expression.
+If the reading symbol is an operator (+, –, *, /), then Push it onto the Stack. However, first, pop the operators which are already on the stack that have higher or equal precedence than the current operator and append them to the postfix. If an open parenthesis is there on top of the stack then push the operator into the stack.
+If the input is over, pop all the remaining symbols from the stack and append them to the postfix.
+*/
