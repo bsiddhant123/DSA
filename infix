@@ -135,6 +135,9 @@ A*B/C
 2*3/(2-1)+5*3
 
 
+Input character   action   stack    output
+read
+
 (),{},[],^,*,/,+,-
 Here are the steps of the algorithm to convert Infix to postfix using stack in C:
 
